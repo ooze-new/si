@@ -5,14 +5,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Providers\ApiRouteProvider;
 
-//Request::setTrustedProxies(array('127.0.0.1'));
+use Firebase\JWT\JWT;
 
-$app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html.twig', array());
-})
-->bind('homepage')
-;
+$app->post('/registration', 'Controllers\\UserController::registration');
+$app->get('/login', 'Controllers\\UserController::login');
+$app->get('/is_unique-email', 'Controllers\\UserController::isUniqueEmail');
+$app->mount('/api', new ApiRouteProvider());
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
