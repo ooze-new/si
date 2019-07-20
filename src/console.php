@@ -16,6 +16,10 @@ use Commands\TaskStatus\TaskStatusListCommand;
 use Commands\TaskStatus\CreateTaskStatusCommand;
 use Commands\TaskStatus\UpdateTaskStatusCommand;
 use Commands\TaskStatus\DeleteTaskStatusCommand;
+use Commands\TaskPriority\TaskPriorityListCommand;
+use Commands\TaskPriority\CreateTaskPriorityCommand;
+use Commands\TaskPriority\UpdateTaskPriorityCommand;
+use Commands\TaskPriority\DeleteTaskPriorityCommand;
 
 $console = new Application('My Silex Application', 'n/a');
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
@@ -67,5 +71,10 @@ $console->add(new TaskStatusListCommand($app));
 $console->add(new CreateTaskStatusCommand($app));
 $console->add(new UpdateTaskStatusCommand($app));
 $console->add(new DeleteTaskStatusCommand($app));
+
+$console->add(new TaskPriorityListCommand($app));
+$console->add(new CreateTaskPriorityCommand($app));
+$console->add(new UpdateTaskPriorityCommand($app));
+$console->add(new DeleteTaskPriorityCommand($app));
 
 return $console;
