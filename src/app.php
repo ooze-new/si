@@ -7,9 +7,11 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 
 use Entity\User;
+use Entity\TaskStatus;
 use Services\UserService;
 use Services\ApiResponse;
 use Services\AuthService;
+use Services\TaskStatusService;
 
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
@@ -26,6 +28,10 @@ $app['user_service'] = function ($app) {
     return new UserService($app['db']);
 };
 
+$app['task_status_service'] = function ($app) {
+    return new TaskStatusService($app['db']);
+};
+
 $app['api_response'] = function ($app) {
     return new ApiResponse($app);
 };
@@ -39,5 +45,6 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 ));
 
 User::setApp($app);
+TaskStatus::setApp($app);
 
 return $app;

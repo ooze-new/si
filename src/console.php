@@ -12,6 +12,10 @@ use Doctrine\Migrations\Tools\Console\Command;
 use Commands\CreateUserCommand;
 use Commands\ChangePasswordCommand;
 use Commands\DeleteUserCommand;
+use Commands\TaskStatus\TaskStatusListCommand;
+use Commands\TaskStatus\CreateTaskStatusCommand;
+use Commands\TaskStatus\UpdateTaskStatusCommand;
+use Commands\TaskStatus\DeleteTaskStatusCommand;
 
 $console = new Application('My Silex Application', 'n/a');
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
@@ -58,5 +62,10 @@ foreach ($commands as $command) {
 $console->add(new CreateUserCommand($app));
 $console->add(new ChangePasswordCommand($app));
 $console->add(new DeleteUserCommand($app));
+
+$console->add(new TaskStatusListCommand($app));
+$console->add(new CreateTaskStatusCommand($app));
+$console->add(new UpdateTaskStatusCommand($app));
+$console->add(new DeleteTaskStatusCommand($app));
 
 return $console;
