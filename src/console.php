@@ -20,6 +20,10 @@ use Commands\TaskPriority\TaskPriorityListCommand;
 use Commands\TaskPriority\CreateTaskPriorityCommand;
 use Commands\TaskPriority\UpdateTaskPriorityCommand;
 use Commands\TaskPriority\DeleteTaskPriorityCommand;
+use Commands\Tag\TagListCommand;
+use Commands\Tag\CreateTagCommand;
+use Commands\Tag\UpdateTagCommand;
+use Commands\Tag\DeleteTagCommand;
 
 $console = new Application('My Silex Application', 'n/a');
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
@@ -76,5 +80,10 @@ $console->add(new TaskPriorityListCommand($app));
 $console->add(new CreateTaskPriorityCommand($app));
 $console->add(new UpdateTaskPriorityCommand($app));
 $console->add(new DeleteTaskPriorityCommand($app));
+
+$console->add(new TagListCommand($app));
+$console->add(new CreateTagCommand($app));
+$console->add(new UpdateTagCommand($app));
+$console->add(new DeleteTagCommand($app));
 
 return $console;

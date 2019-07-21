@@ -58,6 +58,11 @@ class ApiRouteProvider implements ControllerProviderInterface
             return 'ok';
         })->before($before);
 
+        $route
+            ->get('/lookup', 'Controllers\\TagController::lookup')
+            ->before($before)
+        ;
+
         return $route;
     }
 }
