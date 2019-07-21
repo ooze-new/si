@@ -26,7 +26,8 @@
         "doctrine/migrations": "^2.1",
         "knplabs/console-service-provider": "^2.2",
         "ramsey/uuid": "^3.8",
-        "firebase/php-jwt": "^5.0"
+        "firebase/php-jwt": "^5.0",
+        "athari/yalinqo": "^2.4"
     },
     "autoload": {
         "psr-0": { "": "src/" }

@@ -47,16 +47,35 @@ class ApiRouteProvider implements ControllerProviderInterface
             $authService->setUset($user);
         };
 
-        $route->get('/test', function () use ($app)
-        {
-            $user = $app['auth_service']->getUser();
+        $route
+            ->get('/lookup', 'Controllers\\TagController::lookup')
+            ->before($before)
+        ;
 
-            echo '<pre>';
-            var_dump($user);
-            echo '</pre>';
+        $route
+            ->get('/task', 'Controllers\\TaskController::list')
+            ->before($before)
+        ;
 
-            return 'ok';
-        })->before($before);
+        $route
+            ->get('/task/{id}', 'Controllers\\TaskController::get')
+            ->before($before)
+        ;
+
+        $route
+            ->post('/task', 'Controllers\\TaskController::create')
+            ->before($before)
+        ;
+
+        $route
+            ->put('/task/{id}', 'Controllers\\TaskController::update')
+            ->before($before)
+        ;
+
+        $route
+            ->delete('/task/{id}', 'Controllers\\TaskController::delete')
+            ->before($before)
+        ;
 
         return $route;
     }

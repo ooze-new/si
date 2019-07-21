@@ -12,6 +12,18 @@ use Doctrine\Migrations\Tools\Console\Command;
 use Commands\CreateUserCommand;
 use Commands\ChangePasswordCommand;
 use Commands\DeleteUserCommand;
+use Commands\TaskStatus\TaskStatusListCommand;
+use Commands\TaskStatus\CreateTaskStatusCommand;
+use Commands\TaskStatus\UpdateTaskStatusCommand;
+use Commands\TaskStatus\DeleteTaskStatusCommand;
+use Commands\TaskPriority\TaskPriorityListCommand;
+use Commands\TaskPriority\CreateTaskPriorityCommand;
+use Commands\TaskPriority\UpdateTaskPriorityCommand;
+use Commands\TaskPriority\DeleteTaskPriorityCommand;
+use Commands\Tag\TagListCommand;
+use Commands\Tag\CreateTagCommand;
+use Commands\Tag\UpdateTagCommand;
+use Commands\Tag\DeleteTagCommand;
 
 $console = new Application('My Silex Application', 'n/a');
 $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
@@ -58,5 +70,20 @@ foreach ($commands as $command) {
 $console->add(new CreateUserCommand($app));
 $console->add(new ChangePasswordCommand($app));
 $console->add(new DeleteUserCommand($app));
+
+$console->add(new TaskStatusListCommand($app));
+$console->add(new CreateTaskStatusCommand($app));
+$console->add(new UpdateTaskStatusCommand($app));
+$console->add(new DeleteTaskStatusCommand($app));
+
+$console->add(new TaskPriorityListCommand($app));
+$console->add(new CreateTaskPriorityCommand($app));
+$console->add(new UpdateTaskPriorityCommand($app));
+$console->add(new DeleteTaskPriorityCommand($app));
+
+$console->add(new TagListCommand($app));
+$console->add(new CreateTagCommand($app));
+$console->add(new UpdateTagCommand($app));
+$console->add(new DeleteTagCommand($app));
 
 return $console;

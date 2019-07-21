@@ -8,6 +8,11 @@ use Ramsey\Uuid\Uuid;
 abstract class AbstractDbService
 {
     /**
+     * @var Doctrine\DBAL\Connection
+     */
+    protected $connection;
+
+    /**
      * @var Doctrine\DBAL\Query\QueryBuilder
      */
     protected $queryBuilder;
@@ -19,6 +24,7 @@ abstract class AbstractDbService
      */
     public function __construct(Connection $connection)
     {
+        $this->connection = $connection;
         $this->queryBuilder = $connection->createQueryBuilder();
     }
 
