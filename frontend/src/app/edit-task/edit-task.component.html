@@ -1,0 +1,115 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Редактирование задачи</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <form [formGroup]="form" (submit)="submit()">
+        <input type="hidden" formControlName="id">
+        <div class="form-group">
+          <label for="name">Название</label>
+          <input
+            type="email"
+            class="form-control"
+            [ngClass]="{
+              'is-valid': isValidField('name'),
+              'is-invalid': !isValidField('name') && isTouchedField('name')
+            }"
+            formControlName="name"
+            id="name"
+            placeholder="Название задачи"
+          >
+          <div class="invalid-feedback" *ngIf="fieldError('name', 'required')">
+            поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="priority">Приоритет</label>
+          <select
+            class="form-control"
+            [ngClass]="{
+              'is-valid': isValidField('priorityId'),
+              'is-invalid': !isValidField('priorityId') && isTouchedField('priorityId')
+            }"
+            formControlName="priorityId"
+            id="priority"
+            placeholder="Приоритет задачи"
+          >
+            <option *ngFor="let priority of priorities | async" value="{{ priority.id }}">
+              {{ priority.name }}
+            </option>
+          </select>
+          <div class="invalid-feedback" *ngIf="fieldError('priorityId', 'required')">
+            поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="status">Статус</label>
+          <select
+            class="form-control"
+            [ngClass]="{
+              'is-valid': isValidField('statusId'),
+              'is-invalid': !isValidField('statusId') && isTouchedField('statusId')
+            }"
+            formControlName="statusId"
+            id="status"
+            placeholder="Статус задачи"
+          >
+            <option *ngFor="let status of statuses | async" value="{{ status.id }}">
+              {{ status.name }}
+            </option>
+          </select>
+          <div class="invalid-feedback" *ngIf="fieldError('statusId', 'required')">
+            поле обязательно для заполнения
+          </div>
+        </div>
+        <div class="form-group">
+          <label >Теги</label>
+          <div formArrayName="tags" class="tags-list">
+            <ng-container *ngFor="let tag of binded.controls; let i=index">
+                <input type="hidden" [formControlName]="i">
+            </ng-container>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              *ngFor="let tag of binded.tags; let i=index"
+              (click)="binded.delete(i)"
+            >
+              {{ tag.name }}
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Сохранить</button>
+        <button type="botton" class="btn btn btn-light" (click)="cancel()">Отмена</button>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <form [formGroup]="binded.tagsForm">
+        <ng-template #rt let-r="result" let-t="term">
+          <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+        </ng-template>
+
+        <div class="form-group">
+          <label for="typeahead-http">Добавить тег</label>
+          <input
+            id="typeahead-http"
+            type="text"
+            class="form-control"
+            formControlName="tag"
+            [ngbTypeahead]="binded.search"
+            [resultTemplate]="rt"
+            [inputFormatter]="formatter"
+            [editable]="false"
+            autocomplete="false"
+            placeholder="Тегм"
+
+          />
+          <span *ngIf="binded.searching">searching...</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="container" *ngIf="!(authStateChange$ | async)">
+  <div class="row">
+    <div class="col-md-8">
+      Вы не авторизованы. Для работы с задачами нужно
+      <a routerLink="/login">авторизоваться</a>.
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="authStateChange$ | async">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Задачи</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <form [formGroup]="form" class="task-filter sticky-top">
+        <div class="form-group">
+          <label>Приоритет</label>
+          <select class="form-control" formControlName="priority" placeholder="Приоритет задачи">
+            <option value=""></option>
+            <option *ngFor="let priority of priorities | async" value="{{ priority.id }}">
+              {{ priority.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Статус</label>
+          <select class="form-control" formControlName="status" placeholder="Статус задачи">
+            <option value=""></option>
+            <option *ngFor="let status of statuses | async" value="{{ status.id }}">
+              {{ status.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Сортировка</label>
+          <select class="form-control" formControlName="sort" placeholder="Сортировка">
+            <option *ngFor="let sortMode of sortModes" [ngValue]="sortMode.value">
+              {{ sortMode.name }}
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <a routerLink="/add" class="btn btn-primary">Новая</a>
+
+      <div class="card task" *ngFor="let task of tasks | async">
+        <div class="card-body">
+          <h5 class="card-title">{{ task.name }}</h5>
+          <div class="card-text">
+            {{ task.priority }}
+            {{ task.status }}
+            <ul class="tags" *ngIf="task.tags.length > 0">
+              <li class="badge badge-secondary" *ngFor="let tag of task.tags">{{ tag.name }}</li>
+            </ul>
+            <div class="buttons">
+              <a routerLink="/edit/{{ task.id }}" class="btn btn-primary">
+                Редактировать
+              </a>
+              <button type="button" class="btn btn-primary" (click)="delete(task)">
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ngb-pagination
+        *ngIf="taskCount > 0 && taskCount > itemPerPage"
+        [collectionSize]="taskCount"
+        [maxSize]="10"
+        [pageSize]="itemPerPage"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="pageChange($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

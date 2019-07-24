@@ -1,0 +1,18 @@
+Options -MultiViews
+IndexIgnore */*
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    <FilesMatch "\.(htaccess)">
+        deny from all
+    </FilesMatch>
+
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .? - [L]
+
+    RewriteRule ^api/.* index.php [QSA,L]
+
+    # Rewrite all other queries to the front controller.
+    RewriteRule .? frontend/index.html [L]
+</IfModule>
