@@ -25,6 +25,7 @@ class CreateTaskPriorityCommand extends AbstractAppCommand
             ->setDescription('Create task priority')
             ->setHelp("This command create a new task priority")
             ->addArgument('name', InputArgument::REQUIRED, 'The task priority name.')
+            ->addArgument('order-index', InputArgument::REQUIRED, 'The task priority order index.')
         ;
     }
 
@@ -35,6 +36,7 @@ class CreateTaskPriorityCommand extends AbstractAppCommand
     {
         $taskPriority = TaskPriority::fromObject((object) [
             'name' => $input->getArgument('name'),
+            'orderIndex' => $input->getArgument('order-index'),
         ]);
 
         $errors = $this->app['validator']->validate($taskPriority);
@@ -52,6 +54,7 @@ class CreateTaskPriorityCommand extends AbstractAppCommand
             $question = new ConfirmationQuestion('Create task priority?(y/n): ', false);
     
             $output->writeln(sprintf('name: %s', $taskPriority->name));
+            $output->writeln(sprintf('order index: %s', $taskPriority->orderIndex));
 
             if (!$helper->ask($input, $output, $question)) {
                 return;

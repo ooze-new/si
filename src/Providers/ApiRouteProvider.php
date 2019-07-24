@@ -17,7 +17,7 @@ class ApiRouteProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $route = $app['controllers_factory'];   
+        $route = $app['controllers_factory'];
 
         $before = function (Request $request) use ($app) {
             $userService = $app['user_service'];
@@ -49,6 +49,16 @@ class ApiRouteProvider implements ControllerProviderInterface
 
         $route
             ->get('/lookup', 'Controllers\\TagController::lookup')
+            ->before($before)
+        ;
+
+        $route
+            ->get('/priorities', 'Controllers\\PrioritiesController::list')
+            ->before($before)
+        ;
+
+        $route
+            ->get('/statuses', 'Controllers\\StatusesController::list')
             ->before($before)
         ;
 

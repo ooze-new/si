@@ -19,8 +19,9 @@ class TaskStatusService extends AbstractDbService
     public function list()
     {
         $this->queryBuilder
-            ->select('ts.id, ts.name')
+            ->select('ts.id, ts.name, ts.order_index as orderIndex')
             ->from(self::TABLE_NAME, 'ts')
+            ->orderBy('ts.order_index')
         ;
 
         return $this->queryBuilder
@@ -41,7 +42,7 @@ class TaskStatusService extends AbstractDbService
     public function get(string $id): ?TaskStatus
     {
         $this->queryBuilder
-            ->select('ts.id, ts.name')
+            ->select('ts.id, ts.name, ts.order_index as orderIndex')
             ->from(self::TABLE_NAME, 'ts')
             ->where('ts.id = :id')
             ->setParameter(':id', $id)
@@ -73,9 +74,11 @@ class TaskStatusService extends AbstractDbService
             ->values([
                 'id' => ':id',
                 'name' => ':name',
+                'order_index' => ':order_index',
             ])
             ->setParameter(':id', $this->generateUuid())
             ->setParameter(':name', $taskStatus->name)
+            ->setParameter(':order_index', $taskStatus->orderIndex)
         ;
 
         return $this->queryBuilder->execute();
@@ -92,9 +95,11 @@ class TaskStatusService extends AbstractDbService
         $this->queryBuilder
             ->update(self::TABLE_NAME, 'ts')
             ->set('ts.name', ':name')
+            ->set('ts.order_index', ':order_index')
             ->where('ts.id = :id')
             ->setParameter(':id', $taskStatus->id)
             ->setParameter(':name', $taskStatus->name)
+            ->setParameter(':order_index', $taskStatus->orderIndex)
         ;
 
         return $this->queryBuilder->execute();

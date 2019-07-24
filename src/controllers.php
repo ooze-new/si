@@ -9,9 +9,9 @@ use Providers\ApiRouteProvider;
 
 use Firebase\JWT\JWT;
 
-$app->post('/registration', 'Controllers\\UserController::registration');
-$app->get('/login', 'Controllers\\UserController::login');
-$app->get('/is_unique-email', 'Controllers\\UserController::isUniqueEmail');
+$app->post('/api/registration', 'Controllers\\UserController::registration');
+$app->get('/api/login', 'Controllers\\UserController::login');
+$app->get('/api/is-unique-email', 'Controllers\\UserController::isUniqueEmail');
 $app->mount('/api', new ApiRouteProvider());
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {

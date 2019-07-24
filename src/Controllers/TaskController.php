@@ -23,16 +23,28 @@ class TaskController extends BaseController
     {
         $user = $app['auth_service']->getUser();
         $offset = $request->get('offset', 0);
+        $limit = $request->get('limit', 20);
+
+        $count = $app['task_service']->count(
+            $user->id,
+            $request->get('status_id', ''),
+            $request->get('priority_id', '')
+        );
 
         $result = $app['task_service']->list(
             $user->id,
             $request->get('status_id', ''),
             $request->get('priority_id', ''),
             (int) $offset,
-            20
+            (int) $limit,
+            $request->get('sort_field', ''),
+            $request->get('sort_mode', '')
         );
 
-        return $app['api_response']->Response($result);
+        return $app['api_response']->Response([
+            'count' => $count,
+            'tasks' => $result
+        ]);
     }
 
     /**

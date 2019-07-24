@@ -18,6 +18,30 @@ class TaskService extends AbstractDbService
     const PRIORITY_TABLE_NAME = 'task_priority';
     const TAG_TABLE_NAME = 'tags';
 
+    //
+    private function mormalizeSortInfo(string $field, string $mode)
+    {
+        $sortFields = [
+            'name' => 't.name',
+            'status' => 'ts.order_index',
+            'priority' => 'tp.order_index',
+        ];
+
+        $sortModes = [
+            'asc' => true,
+            'desc' => true,
+        ];
+
+        return (object) [
+            'field' => isset($sortFields[$field])
+                ? $sortFields[$field]
+                : $sortFields['status'],
+            'mode' => isset($sortModes[$mode])
+                ? $mode
+                : 'asc',
+        ];
+    }
+
     /**
      * Get task list
      *
@@ -26,6 +50,8 @@ class TaskService extends AbstractDbService
      * @param string $priorityId uid4 priority identificator
      * @param integer $offset
      * @param integer $limitt
+     * @param string $orderField sort field
+     * @param string $priorityMode sort mode (asc|desc)
      * @return Task[]
      */
     public function list(
@@ -33,11 +59,14 @@ class TaskService extends AbstractDbService
         string $statusId = '',
         string $priorityId = '',
         int $offset = 0,
-        int $limit = 20
+        int $limit = 20,
+        string $orderField = '',
+        string $priorityMode = ''
     )
     {
-        $qb = $this->connection->createQueryBuilder();
+        $sortInfo = $this->mormalizeSortInfo($orderField, $priorityMode);
 
+        $qb = $this->connection->createQueryBuilder();
         $qb
             ->select('
                 t.id,
@@ -54,6 +83,10 @@ class TaskService extends AbstractDbService
             ->join('t', self::STATUS_TABLE_NAME, 'ts', 'ts.id = t.status_id')
             ->join('t', self::PRIORITY_TABLE_NAME, 'tp', 'tp.id = t.priority_id')
             ->where('t.user_id = :user_id')
+            ->orderBy(
+                $sortInfo->field,
+                $sortInfo->mode
+            )
             ->setParameter(':user_id', $userId)
         ;
 
@@ -120,6 +153,50 @@ class TaskService extends AbstractDbService
     }
 
     /**
+     * Get task count
+     * 
+     * @param string $statusId uuid4 status identificator
+     * @param string $priorityId uid4 priority identificator
+     * @return int
+     */
+    public function count(
+        string $userId,
+        string $statusId = '',
+        string $priorityId = ''
+    ): int
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb
+            ->select('
+                count(*)
+            ')
+            ->from(self::TABLE_NAME, 't')
+            ->where('t.user_id = :user_id')
+            ->setParameter(':user_id', $userId)
+        ;
+
+        if ($statusId) {
+            $qb
+                ->andWhere('t.status_id = :status_id')
+                ->setParameter(':status_id', $statusId)
+            ;
+        }
+
+        if ($priorityId) {
+            $qb
+                ->andWhere('t.priority_id = :priority_id')
+                ->setParameter(':priority_id', $priorityId)
+            ;
+        }
+
+        return $qb
+            ->execute()
+            ->fetchColumn(0)
+        ;
+    }
+
+    /**
      * Get task
      *
      * @param string $id uuid4 task identificator
@@ -133,12 +210,12 @@ class TaskService extends AbstractDbService
         $qb
             ->select('
                 t.id,
-                /*t.user_id as userId,
+                t.user_id as userId,
                 u.email as user,
                 t.status_id as statusId,
                 ts.name as status,
                 t.priority_id as priorityId,
-                tp.name as priority,*/
+                tp.name as priority,
                 t.name
             ')
             ->from(self::TABLE_NAME, 't')

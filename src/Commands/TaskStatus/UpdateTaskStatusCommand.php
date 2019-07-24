@@ -26,6 +26,7 @@ class UpdateTaskStatusCommand extends AbstractAppCommand
             ->setHelp("This command update task status")
             ->addArgument('id', InputArgument::REQUIRED, 'The task status id.')
             ->addArgument('name', InputArgument::REQUIRED, 'The task status name.')
+            ->addArgument('order-index', InputArgument::REQUIRED, 'The task status order index.')
         ;
     }
 
@@ -37,6 +38,7 @@ class UpdateTaskStatusCommand extends AbstractAppCommand
         $taskStatus = TaskStatus::fromObject((object) [
             'id' => $input->getArgument('id'),
             'name' => $input->getArgument('name'),
+            'orderIndex' => $input->getArgument('order-index'),
         ]);
 
         $errors = $this->app['validator']->validate($taskStatus);
@@ -55,6 +57,7 @@ class UpdateTaskStatusCommand extends AbstractAppCommand
     
             $output->writeln(sprintf('id: %s', $taskStatus->id));
             $output->writeln(sprintf('name: %s', $taskStatus->name));
+            $output->writeln(sprintf('order index: %s', $taskStatus->orderIndex));
 
             if (!$helper->ask($input, $output, $question)) {
                 return;
