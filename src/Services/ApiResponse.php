@@ -78,7 +78,7 @@ class ApiResponse
     public function Response($data)
     {
         return $this->app->json(
-            (object) ['status' => 1, 'reswponse' => $data],
+            (object) ['status' => 1, 'response' => $data],
             200,
             ['Content-Type' => 'application/json; charset=utf-8']
         );

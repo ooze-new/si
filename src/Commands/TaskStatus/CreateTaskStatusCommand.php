@@ -25,6 +25,7 @@ class CreateTaskStatusCommand extends AbstractAppCommand
             ->setDescription('Create task status')
             ->setHelp("This command create a new task status")
             ->addArgument('name', InputArgument::REQUIRED, 'The task status name.')
+            ->addArgument('order-index', InputArgument::REQUIRED, 'The task status order index.')
         ;
     }
 
@@ -35,6 +36,7 @@ class CreateTaskStatusCommand extends AbstractAppCommand
     {
         $taskStatus = TaskStatus::fromObject((object) [
             'name' => $input->getArgument('name'),
+            'orderIndex' => $input->getArgument('order-index'),
         ]);
 
         $errors = $this->app['validator']->validate($taskStatus);
@@ -52,6 +54,7 @@ class CreateTaskStatusCommand extends AbstractAppCommand
             $question = new ConfirmationQuestion('Create task status?(y/n): ', false);
     
             $output->writeln(sprintf('name: %s', $taskStatus->name));
+            $output->writeln(sprintf('order index: %s', $taskStatus->orderIndex));
 
             if (!$helper->ask($input, $output, $question)) {
                 return;

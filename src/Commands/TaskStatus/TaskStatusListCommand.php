@@ -39,7 +39,7 @@ class TaskStatusListCommand extends AbstractAppCommand
         $table = new Table($output);
 
         $table
-            ->setHeaders(array('id', 'name'))
+            ->setHeaders(array('id', 'name', 'order index'))
         ;
 
         foreach ($taskStatusList as $taskStatus) {
@@ -47,6 +47,7 @@ class TaskStatusListCommand extends AbstractAppCommand
                 ->addRow([
                     $taskStatus->id,
                     $taskStatus->name,
+                    $taskStatus->orderIndex,
                 ])
             ;
         }

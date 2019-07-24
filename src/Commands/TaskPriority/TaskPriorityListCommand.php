@@ -38,7 +38,7 @@ class TaskPriorityListCommand extends AbstractAppCommand
         $table = new Table($output);
 
         $table
-            ->setHeaders(array('id', 'name'))
+            ->setHeaders(array('id', 'name', 'order index'))
         ;
 
         foreach ($taskPriorityList as $taskPriority) {
@@ -46,6 +46,7 @@ class TaskPriorityListCommand extends AbstractAppCommand
                 ->addRow([
                     $taskPriority->id,
                     $taskPriority->name,
+                    $taskPriority->orderIndex,
                 ])
             ;
         }

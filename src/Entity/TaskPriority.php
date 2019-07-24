@@ -18,6 +18,11 @@ class TaskPriority extends AbstractEntity
     public $name;
 
     /**
+     * @var int
+     */
+    public $orderIndex;
+
+    /**
      * Set object validation rules
      *
      * @param Symfony\Component\Validator\Mapping\ClassMetadata $metadata

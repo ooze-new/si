@@ -26,6 +26,7 @@ class UpdateTaskPriorityCommand extends AbstractAppCommand
             ->setHelp("This command update task priority")
             ->addArgument('id', InputArgument::REQUIRED, 'The task priority id.')
             ->addArgument('name', InputArgument::REQUIRED, 'The task priority name.')
+            ->addArgument('order-index', InputArgument::REQUIRED, 'The task priority order index.')
         ;
     }
 
@@ -37,6 +38,7 @@ class UpdateTaskPriorityCommand extends AbstractAppCommand
         $taskPriority = TaskPriority::fromObject((object) [
             'id' => $input->getArgument('id'),
             'name' => $input->getArgument('name'),
+            'orderIndex' => $input->getArgument('order-index'),
         ]);
 
         $errors = $this->app['validator']->validate($taskPriority);
@@ -55,6 +57,7 @@ class UpdateTaskPriorityCommand extends AbstractAppCommand
     
             $output->writeln(sprintf('id: %s', $taskPriority->id));
             $output->writeln(sprintf('name: %s', $taskPriority->name));
+            $output->writeln(sprintf('order index: %s', $taskPriority->orderIndex));
 
             if (!$helper->ask($input, $output, $question)) {
                 return;

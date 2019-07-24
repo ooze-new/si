@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h1>Регистрация</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <form [formGroup]="form" (submit)="submit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [ngClass]="{
+              'is-valid': isValidField('email'),
+              'is-invalid': !isValidField('email') && isTouchedField('email')
+            }"
+            formControlName="email"
+            id="email"
+            placeholder="email"
+          >
+          <div class="invalid-feedback" *ngIf="fieldError('email', 'required')">
+            поле обязательно для заполнения
+          </div>
+          <div class="invalid-feedback" *ngIf="fieldError('email', 'email')">
+            не корректный адрес электронной почты
+          </div>
+          <div class="invalid-feedback" *ngIf="fieldError('email', 'UserUniqueEmail')">
+            ползователь уже существует
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <input
+            type="password"
+            class="form-control"
+            [ngClass]="{
+              'is-valid': isValidField('password'),
+              'is-invalid': !isValidField('password') && isTouchedField('password')
+            }"
+            formControlName="password"
+            id="password"
+            placeholder="Пароль"
+          >
+          <div class="invalid-feedback" *ngIf="fieldError('password', 'required')">
+            поле обязательно для заполнения
+          </div>
+          <div class="invalid-feedback" *ngIf="fieldError('password', 'minlength')">
+            минимальная длинна 6 символов
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Пароль ещё раз</label>
+          <input
+            type="password"
+            class="form-control"
+            [ngClass]="{
+              'is-valid': isValidField('confirmPassword'),
+              'is-invalid': !isValidField('confirmPassword') && isTouchedField('confirmPassword')
+            }"
+            formControlName="confirmPassword"
+            id="confirmPassword"
+            placeholder="Пароль"
+          >
+          <div class="invalid-feedback" *ngIf="fieldError('confirmPassword', 'required')">
+            поле обязательно для заполнения
+          </div>
+          <div class="invalid-feedback" *ngIf="fieldError('confirmPassword', 'minlength')">
+            минимальная длинна 6 символов
+          </div>
+        </div>
+        <button type="botton" class="btn btn btn-light" (click)="cancel()">Отмена</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Зарегистрироваться</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -36,7 +36,7 @@ class UserController extends BaseController
             return $app['api_response']->Error($errors, 400);
         }
 
-        $app['user_service']->create(User::fromObject($user));
+        $app['user_service']->create($user);
 
         return $app['api_response']->Response($user);
     }
@@ -100,6 +100,6 @@ class UserController extends BaseController
     {
         $isUniqueEmail = $app['user_service']->isUniqueEmail($request->get('email', ''));
 
-        return $app['api_response']->Response($jsonWebToken);
+        return $app['api_response']->Response($isUniqueEmail);
     }
 }
